@@ -30,7 +30,7 @@ def main():
 
 		model = RetrievalBasedModel(sentence_length, vocab_size, embed_dim)
 		print('Main: Tokenizing started...')
-		context, answer = tokenize_data(file)
+		context, answer = tokenize_data(file, sentence_length)
 		print('Main: Tokenizing finished, triplet dividing started...')
 		train_uid, train_pid, train_nid = get_triplets(context, answer)
 		print('Main: Triplet dividing finished, training started...')
