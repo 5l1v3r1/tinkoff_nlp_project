@@ -41,18 +41,11 @@ class TalkativeGuyBot(telepot.DelegatorBot):
             pave_event_space()(per_chat_id(), create_open, TalkativeGuyChatHandler, timeout=1000000)
         ])
 
-def main():
-	try:
-		TOKEN = sys.argv[1]
-		bot = TalkativeGuyBot(TOKEN)
+def start_bot(TOKEN):
+	bot = TalkativeGuyBot(TOKEN)
 
-		MessageLoop(bot).run_as_thread()
-		print ('BotHosting: I am listening ...')
+	MessageLoop(bot).run_as_thread()
+	print ('BotHosting: I am listening ...')
 
-		while 1:
-		    time.sleep(4)
-	except:
-		print('ERR')
-
-if __name__ == "__main__":
-    main()
+	while 1:
+	    time.sleep(4)
