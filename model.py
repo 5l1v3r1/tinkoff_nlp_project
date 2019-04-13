@@ -20,6 +20,7 @@ class RetrievalBasedModel():
 		self._model = None
 		self._build_model(sentence_length, vocab_size, embed_dim)
 		print(self._model.summary())
+		print('Model initializing finished')
 
 	def _build_model(self, sentence_length, vocab_size, embed_dim):
 		positive_answer_input = Input((1, ), name='positive_answer_input')
@@ -27,15 +28,15 @@ class RetrievalBasedModel():
 		context_input = Input((1, ), name='context_input')
 
 		answer_embedding_layer = Embedding(
-		    vocab_size, sentence_length, name='word_embedding', input_length=sentence_length)
-		average_embedding_layer = Lambda(lambda x: keras.backend.mean(x, axis=1))
+		    vocab_size, sentence_length, name='word_embedding', input_length=1)
+		average_embedding_layer = Lambda(lambda x: K.mean(x, axis=1))
 
 		positive_answer_embedding = answer_embedding_layer(
 		    positive_answer_input)
 		negative_answer_embedding = answer_embedding_layer(
 		    negative_answer_input)
 		context_embedding = answer_embedding_layer(
-			context_embedding)
+			context_input)
 
 		positive_answer_average_embedding = average_embedding_layer(
 			positive_answer_embedding)
@@ -56,6 +57,7 @@ class RetrievalBasedModel():
 		self._model.compile(loss=identity_loss, optimizer=Adam())
 
 	def train(self, train_uid, train_pid, train_nid, num_epochs):
+		print('Model training started')
 		for epoch in range(num_epochs):
 		    print('Epoch ' + epoch)
 
@@ -65,12 +67,19 @@ class RetrievalBasedModel():
 		        'negative_answer_input': train_nid
 		    }
 
-		    model.fit(X,
-		              np.ones(len(train_uid)),
-		              batch_size=64,
-		              nb_epoch=1,
-		              verbose=1,
-		              shuffle=True)
+		    self._model.fit(X,
+				np.ones(len(train_uid)),
+				batch_size=64,
+				nb_epoch=1,
+				verbose=1,
+				shuffle=True)
+		self._save_weights()
+
+	def _save_weights(self):
+		weights_list = self._model.get_weights()
+		with open('weight.json') as f:
+			print(json.dumps(weights_list.tolist()), file=f)
+
 
 	def get_response(self, text):
 		return 'Reply to text' #TO IMPLEMENT

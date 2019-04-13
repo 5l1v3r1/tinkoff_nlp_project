@@ -29,8 +29,11 @@ def main():
 			pass
 
 		model = RetrievalBasedModel(sentence_length, vocab_size, embed_dim)
+		print('Main: Tokenizing started...')
 		context, answer = tokenize_data(file)
+		print('Main: Tokenizing finished, triplet dividing started...')
 		train_uid, train_pid, train_nid = get_triplets(context, answer)
+		print('Main: Triplet dividing finished, training started...')
 		model.train(train_uid, train_pid, train_nid, num_epochs)
 	elif action == 'start_bot':
 		try:
