@@ -1,6 +1,7 @@
 from model import RetrievalBasedModel
 from preprocess import tokenize_data, get_triplets
 from bot import start_bot
+import sys
 
 def main():
 	action = None
@@ -9,6 +10,7 @@ def main():
 	token = None
 	num_epochs = 10 # default value
 	sentence_length, vocab_size, embed_dim = 100, 5000, 20 # default values
+	print(sys.argv[1])
 	try:
 		action = sys.argv[1]
 	except:
