@@ -15,7 +15,7 @@ def tokenize_data(csv_file):
 	answer = df["answer"]
 	tokenizer = Tokenizer(num_words=5000)
 	united_data = np.concatenate((context, answer), axis = None)
-	tokenizer.fit_on_texts(tqdm.tqdm_notebook(united_data, desc='answer_fit'))
+	tokenizer.fit_on_texts(united_data)
 	tokenized_context = tokenizer.texts_to_sequences(context)
 	tokenized_answer = tokenizer.texts_to_sequences(answer)
 	return tokenized_context, tokenized_answer
