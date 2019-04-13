@@ -23,12 +23,12 @@ class RetrievalBasedModel():
 		print('Model initializing finished')
 
 	def _build_model(self, sentence_length, vocab_size, embed_dim):
-		positive_answer_input = Input((1, ), name='positive_answer_input')
-		negative_answer_input = Input((1, ), name='negative_answer_input')
-		context_input = Input((1, ), name='context_input')
+		positive_answer_input = Input((sentence_length, ), name='positive_answer_input')
+		negative_answer_input = Input((sentence_length, ), name='negative_answer_input')
+		context_input = Input((sentence_length, ), name='context_input')
 
 		answer_embedding_layer = Embedding(
-		    vocab_size, sentence_length, name='word_embedding', input_length=1)
+		    vocab_size, sentence_length, name='word_embedding', input_length=sentence_length)
 		average_embedding_layer = Lambda(lambda x: K.mean(x, axis=1))
 
 		positive_answer_embedding = answer_embedding_layer(
